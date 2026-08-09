@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen w-full">
+    <section className="relative h-screen w-full overflow-hidden">
 
       {/* Hero Image */}
       <Image
@@ -10,27 +10,58 @@ export default function Hero() {
         alt="Sabin Uralikandy"
         fill
         priority
-        className="object-cover"
+        sizes="100vw"
+        className="object-cover object-center"
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/35"></div>
+      <div className="absolute inset-0 bg-black/45"></div>
 
-      {/* Bottom Fade */}
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black to-transparent"></div>
+      {/* Bottom Gradient */}
+      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
-      {/* Hero Content */}
-      <div className="absolute bottom-24 left-10 md:left-16 text-white">
+      {/* Content */}
+      <div className="absolute bottom-14 left-6 right-6 md:bottom-24 md:left-16 md:right-auto text-white">
 
-        <h1 className="text-2xl md:text-4xl font-extralight tracking-[0.45em] uppercase">
+        <h1 className="
+          text-3xl
+          sm:text-4xl
+          md:text-5xl
+          font-extralight
+          uppercase
+          tracking-[0.25em]
+          leading-tight
+        ">
           SABIN URALIKANDY
         </h1>
 
-        <p className="mt-3 mb-8 text-sm uppercase tracking-[0.35em] text-gray-300">
+        <p className="
+          mt-4
+          text-xs
+          md:text-sm
+          uppercase
+          tracking-[0.35em]
+          text-zinc-300
+        ">
           Director of Photography
         </p>
 
-        <button className="border border-white px-8 py-4 text-xs uppercase tracking-[0.35em] transition duration-300 hover:bg-white hover:text-black">
+        <button
+          className="
+            mt-8
+            border
+            border-white
+            px-8
+            py-4
+            text-xs
+            uppercase
+            tracking-[0.35em]
+            transition
+            duration-300
+            hover:bg-white
+            hover:text-black
+          "
+        >
           WATCH SHOWREEL →
         </button>
 
