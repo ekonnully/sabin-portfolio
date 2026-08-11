@@ -13,14 +13,15 @@ const heroImages = [
 /*
  * Mobile framing for each image.
  *
- * These positions only affect phones.
  * Desktop remains centered.
+ * Mobile gets individual positioning so important
+ * parts of each shot stay inside the phone frame.
  */
-const mobilePositions = [
-  "center 42%",
-  "center 45%",
-  "center 40%",
-  "center 45%",
+const mobilePositionClasses = [
+  "object-[center_42%]",
+  "object-[center_45%]",
+  "object-[center_40%]",
+  "object-[center_45%]",
 ];
 
 export default function Hero() {
@@ -47,7 +48,6 @@ export default function Hero() {
         bg-black
       "
     >
-
       {/* =====================================================
           HERO IMAGES
       ===================================================== */}
@@ -73,32 +73,23 @@ export default function Hero() {
             fill
             priority={index === 0}
             sizes="100vw"
-            className="
+            className={`
               object-cover
-              object-center
+              ${mobilePositionClasses[index]}
               transition-transform
               duration-[5000ms]
               ease-linear
               md:object-center
-            "
-            style={{
-              objectPosition:
-                typeof window !== "undefined" &&
-                window.innerWidth < 768
-                  ? mobilePositions[index]
-                  : "center center",
-            }}
+            `}
           />
         </div>
       ))}
-
 
       {/* =====================================================
           DARK OVERLAY
       ===================================================== */}
 
       <div className="absolute inset-0 bg-black/40" />
-
 
       {/* =====================================================
           BOTTOM GRADIENT
@@ -116,7 +107,6 @@ export default function Hero() {
           to-transparent
         "
       />
-
 
       {/* =====================================================
           HERO CONTENT
@@ -137,7 +127,6 @@ export default function Hero() {
           md:right-auto
         "
       >
-
         {/* NAME */}
 
         <h1
@@ -163,7 +152,6 @@ export default function Hero() {
           </span>
         </h1>
 
-
         {/* PROFESSION */}
 
         <p
@@ -182,7 +170,6 @@ export default function Hero() {
         >
           Director of Photography
         </p>
-
 
         {/* SHOWREEL BUTTON */}
 
@@ -213,9 +200,7 @@ export default function Hero() {
         >
           WATCH SHOWREEL →
         </button>
-
       </div>
-
     </section>
   );
 }
