@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { films } from "@/data/films";
 
 export default function WorkSection() {
   const [transitioning, setTransitioning] = useState(false);
+  const [transitionExpanded, setTransitionExpanded] = useState(false);
   const [transitionImage, setTransitionImage] = useState("");
   const [transitionRect, setTransitionRect] = useState<DOMRect | null>(null);
 
@@ -27,13 +28,25 @@ export default function WorkSection() {
 
     const rect = imageElement.getBoundingClientRect();
 
-    setTransitionRect(rect);
     setTransitionImage(film.image);
+    setTransitionRect(rect);
     setTransitioning(true);
 
     /*
-     * Give the expansion animation time to complete
-     * before navigating to the project page.
+     * Start the expansion on the next frame.
+     * This makes sure the browser first renders
+     * the image in its original card position.
+     */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTransitionExpanded(true);
+      });
+    });
+
+    /*
+     * The destination C U Soon hero is 75svh,
+     * so the transition now finishes at exactly
+     * the same height instead of expanding to 100vh.
      */
     window.setTimeout(() => {
       window.location.href = "/films/cu-soon";
@@ -44,9 +57,21 @@ export default function WorkSection() {
     <>
       <section
         id="work"
-        className="bg-black text-white px-4 sm:px-6 md:px-8 lg:px-10 py-20 sm:py-24"
+        className="
+          bg-black
+          text-white
+          px-4
+          sm:px-6
+          md:px-8
+          lg:px-10
+          py-20
+          sm:py-24
+        "
       >
-        {/* Section Title */}
+        {/* =====================================================
+            SECTION TITLE
+        ===================================================== */}
+
         <div className="mb-10 sm:mb-14 md:mb-16">
           <h2
             className="
@@ -64,17 +89,25 @@ export default function WorkSection() {
           </h2>
         </div>
 
-        {/* Film Grid */}
+
+        {/* =====================================================
+            FILM GRID
+
+            Mobile: 2 columns
+            Tablet: 2 columns
+            Desktop: 4 columns
+        ===================================================== */}
+
         <div
           className="
             grid
-            grid-cols-1
+            grid-cols-2
             sm:grid-cols-2
             lg:grid-cols-4
             gap-x-3
             sm:gap-x-4
             lg:gap-x-5
-            gap-y-14
+            gap-y-12
             sm:gap-y-16
           "
         >
@@ -84,9 +117,17 @@ export default function WorkSection() {
             const filmContent = (
               <article
                 key={film.id}
-                className="group min-w-0 cursor-pointer"
+                className="
+                  group
+                  min-w-0
+                  cursor-pointer
+                "
               >
-                {/* Film Image */}
+
+                {/* =================================================
+                    FILM IMAGE
+                ================================================= */}
+
                 <div
                   data-film-image
                   className="
@@ -102,7 +143,7 @@ export default function WorkSection() {
                     alt={film.title}
                     fill
                     sizes="
-                      (max-width: 639px) 100vw,
+                      (max-width: 639px) 50vw,
                       (max-width: 1023px) 50vw,
                       25vw
                     "
@@ -116,7 +157,10 @@ export default function WorkSection() {
                     "
                   />
 
-                  {/* Image Overlay */}
+                  {/* =================================================
+                      IMAGE OVERLAY
+                  ================================================= */}
+
                   <div
                     className="
                       absolute
@@ -128,7 +172,10 @@ export default function WorkSection() {
                     "
                   />
 
-                  {/* View Project */}
+                  {/* =================================================
+                      VIEW PROJECT
+                  ================================================= */}
+
                   <div
                     className="
                       absolute
@@ -146,12 +193,15 @@ export default function WorkSection() {
                       className="
                         border
                         border-white
-                        px-6
-                        py-3
-                        text-[10px]
+                        px-4
+                        py-2.5
+                        text-[8px]
+                        sm:px-6
+                        sm:py-3
                         sm:text-xs
                         uppercase
-                        tracking-[0.3em]
+                        tracking-[0.25em]
+                        sm:tracking-[0.3em]
                       "
                     >
                       VIEW PROJECT →
@@ -159,16 +209,21 @@ export default function WorkSection() {
                   </div>
                 </div>
 
-                {/* Film Information */}
-                <div className="pt-5 sm:pt-6">
 
-                  {/* Year + Language */}
+                {/* =================================================
+                    FILM INFORMATION
+                ================================================= */}
+
+                <div className="pt-4 sm:pt-6">
+
+                  {/* YEAR + LANGUAGE */}
+
                   <p
                     className="
-                      text-[9px]
+                      text-[8px]
                       sm:text-[10px]
                       uppercase
-                      tracking-[0.25em]
+                      tracking-[0.2em]
                       sm:tracking-[0.3em]
                       text-zinc-500
                     "
@@ -176,11 +231,14 @@ export default function WorkSection() {
                     {film.year} · {film.language}
                   </p>
 
-                  {/* Title */}
+
+                  {/* TITLE */}
+
                   <h3
                     className="
-                      mt-3
-                      text-xl
+                      mt-2
+                      sm:mt-3
+                      text-base
                       sm:text-2xl
                       font-light
                       leading-tight
@@ -190,30 +248,36 @@ export default function WorkSection() {
                     {film.title}
                   </h3>
 
-                  {/* Role */}
+
+                  {/* ROLE */}
+
                   <p
                     className="
-                      mt-2
-                      text-[10px]
+                      mt-1.5
+                      sm:mt-2
+                      text-[8px]
                       sm:text-xs
                       uppercase
-                      tracking-[0.18em]
+                      tracking-[0.14em]
+                      sm:tracking-[0.18em]
                       text-zinc-500
                     "
                   >
                     {film.role}
                   </p>
 
-                  {/* Mobile View Project */}
+
+                  {/* MOBILE VIEW PROJECT */}
+
                   <div
                     className="
-                      mt-5
+                      mt-4
                       inline-flex
                       items-center
-                      gap-2
-                      text-[10px]
+                      gap-1.5
+                      text-[8px]
                       uppercase
-                      tracking-[0.28em]
+                      tracking-[0.2em]
                       text-white
                       sm:hidden
                     "
@@ -223,12 +287,15 @@ export default function WorkSection() {
                   </div>
 
                 </div>
+
               </article>
             );
 
-            /*
-             * C U Soon gets the cinematic page transition.
-             */
+
+            {/* =====================================================
+                C U SOON PROJECT LINK
+            ===================================================== */}
+
             if (isCUSoon) {
               return (
                 <Link
@@ -237,7 +304,7 @@ export default function WorkSection() {
                   onClick={(event) =>
                     handleProjectClick(event, film)
                   }
-                  className="block"
+                  className="block min-w-0"
                 >
                   {filmContent}
                 </Link>
@@ -250,9 +317,9 @@ export default function WorkSection() {
       </section>
 
 
-      {/* =====================================================
-          CINEMATIC IMAGE EXPANSION
-      ===================================================== */}
+      {/* =========================================================
+          CINEMATIC IMAGE TRANSITION
+      ========================================================= */}
 
       {transitioning && transitionRect && (
         <div
@@ -261,24 +328,21 @@ export default function WorkSection() {
             inset-0
             z-[9999]
             pointer-events-none
+            bg-black
           "
         >
-          {/* Dark background */}
-          <div
-            className="
-              absolute
-              inset-0
-              bg-black
-              transition-opacity
-              duration-700
-              ease-out
-            "
-            style={{
-              opacity: 1,
-            }}
-          />
 
-          {/* Expanding image */}
+          {/* =====================================================
+              EXPANDING IMAGE
+
+              Destination:
+              - top: 0
+              - width: 100vw
+              - height: 75svh
+
+              This matches the C U Soon hero.
+          ===================================================== */}
+
           <div
             className="
               absolute
@@ -288,20 +352,21 @@ export default function WorkSection() {
               ease-[cubic-bezier(0.76,0,0.24,1)]
             "
             style={{
-              left: transitionRect.left,
-              top: transitionRect.top,
-              width: transitionRect.width,
-              height: transitionRect.height,
-            }}
-            ref={(element) => {
-              if (!element) return;
+              left: transitionExpanded
+                ? "0px"
+                : `${transitionRect.left}px`,
 
-              requestAnimationFrame(() => {
-                element.style.left = "0px";
-                element.style.top = "0px";
-                element.style.width = "100vw";
-                element.style.height = "100vh";
-              });
+              top: transitionExpanded
+                ? "0px"
+                : `${transitionRect.top}px`,
+
+              width: transitionExpanded
+                ? "100vw"
+                : `${transitionRect.width}px`,
+
+              height: transitionExpanded
+                ? "75svh"
+                : `${transitionRect.height}px`,
             }}
           >
             <Image
@@ -316,14 +381,27 @@ export default function WorkSection() {
             />
 
             {/* Cinematic darkening */}
-            <div
-              className="
-                absolute
-                inset-0
-                bg-black/15
-              "
-            />
+            <div className="absolute inset-0 bg-black/15" />
           </div>
+
+
+          {/* =====================================================
+              LOWER BLACK AREA
+
+              Keeps the transition visually consistent with
+              the C U Soon page beneath the 75svh hero.
+          ===================================================== */}
+
+          <div
+            className="
+              absolute
+              left-0
+              right-0
+              bottom-0
+              h-[25svh]
+              bg-black
+            "
+          />
         </div>
       )}
     </>

@@ -10,20 +10,6 @@ const heroImages = [
   "/images/hero/hero-3.png",
 ];
 
-/*
- * Mobile framing for each image.
- *
- * Desktop remains centered.
- * Mobile gets individual positioning so important
- * parts of each shot stay inside the phone frame.
- */
-const mobilePositionClasses = [
-  "object-[center_42%]",
-  "object-[center_45%]",
-  "object-[center_40%]",
-  "object-[center_45%]",
-];
-
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -67,29 +53,93 @@ export default function Hero() {
             }
           `}
         >
-          <Image
-            src={image}
-            alt="Sabin Uralikandy cinematography"
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className={`
-              object-cover
-              ${mobilePositionClasses[index]}
-              transition-transform
-              duration-[5000ms]
-              ease-linear
-              md:object-center
-            `}
-          />
+          {/* =================================================
+              MOBILE / TABLET BACKGROUND
+              Enlarged + blurred version of the same image
+          ================================================= */}
+
+          <div className="absolute inset-0 md:hidden">
+            <Image
+              src={image}
+              alt=""
+              fill
+              sizes="100vw"
+              className="
+                scale-125
+                object-cover
+                object-center
+                blur-2xl
+              "
+            />
+
+            <div className="absolute inset-0 bg-black/45" />
+          </div>
+
+
+          {/* =================================================
+              MOBILE / TABLET ACTUAL FRAME
+              Entire landscape image remains visible
+          ================================================= */}
+
+          <div
+            className="
+              absolute
+              inset-x-0
+              top-[18%]
+              bottom-[27%]
+              flex
+              items-center
+              justify-center
+              md:hidden
+            "
+          >
+            <Image
+              src={image}
+              alt="Sabin Uralikandy cinematography"
+              width={1920}
+              height={1080}
+              sizes="100vw"
+              className="
+                h-auto
+                max-h-full
+                w-full
+                object-contain
+              "
+            />
+          </div>
+
+
+          {/* =================================================
+              DESKTOP
+              Original full-screen presentation
+          ================================================= */}
+
+          <div className="absolute inset-0 hidden md:block">
+            <Image
+              src={image}
+              alt="Sabin Uralikandy cinematography"
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="
+                object-cover
+                object-center
+                transition-transform
+                duration-[5000ms]
+                ease-linear
+              "
+            />
+          </div>
         </div>
       ))}
+
 
       {/* =====================================================
           DARK OVERLAY
       ===================================================== */}
 
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/35 md:bg-black/40" />
+
 
       {/* =====================================================
           BOTTOM GRADIENT
@@ -108,6 +158,7 @@ export default function Hero() {
         "
       />
 
+
       {/* =====================================================
           HERO CONTENT
       ===================================================== */}
@@ -118,6 +169,7 @@ export default function Hero() {
           bottom-10
           left-6
           right-6
+          z-10
           text-white
 
           sm:bottom-12
@@ -127,7 +179,10 @@ export default function Hero() {
           md:right-auto
         "
       >
-        {/* NAME */}
+
+        {/* =================================================
+            NAME
+        ================================================= */}
 
         <h1
           className="
@@ -152,7 +207,10 @@ export default function Hero() {
           </span>
         </h1>
 
-        {/* PROFESSION */}
+
+        {/* =================================================
+            PROFESSION
+        ================================================= */}
 
         <p
           className="
@@ -171,7 +229,10 @@ export default function Hero() {
           Director of Photography
         </p>
 
-        {/* SHOWREEL BUTTON */}
+
+        {/* =================================================
+            SHOWREEL BUTTON
+        ================================================= */}
 
         <button
           className="
@@ -200,7 +261,9 @@ export default function Hero() {
         >
           WATCH SHOWREEL →
         </button>
+
       </div>
+
     </section>
   );
 }
