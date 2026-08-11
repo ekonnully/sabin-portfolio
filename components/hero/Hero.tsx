@@ -10,29 +10,62 @@ const heroImages = [
   "/images/hero/hero-3.png",
 ];
 
+/*
+ * Mobile framing for each image.
+ *
+ * These positions only affect phones.
+ * Desktop remains centered.
+ */
+const mobilePositions = [
+  "center 42%",
+  "center 45%",
+  "center 40%",
+  "center 45%",
+];
+
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage((previous) => (previous + 1) % heroImages.length);
+      setCurrentImage(
+        (previous) => (previous + 1) % heroImages.length
+      );
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative h-[100svh] min-h-[600px] w-full overflow-hidden">
+    <section
+      className="
+        relative
+        h-[100dvh]
+        min-h-[600px]
+        w-full
+        overflow-hidden
+        bg-black
+      "
+    >
 
-      {/* Hero Images */}
+      {/* =====================================================
+          HERO IMAGES
+      ===================================================== */}
+
       {heroImages.map((image, index) => (
         <div
           key={image}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImage
-              ? "opacity-100"
-              : "opacity-0"
-          }`}
+          className={`
+            absolute
+            inset-0
+            transition-opacity
+            duration-1000
+            ${
+              index === currentImage
+                ? "opacity-100"
+                : "opacity-0"
+            }
+          `}
         >
           <Image
             src={image}
@@ -48,14 +81,29 @@ export default function Hero() {
               ease-linear
               md:object-center
             "
+            style={{
+              objectPosition:
+                typeof window !== "undefined" &&
+                window.innerWidth < 768
+                  ? mobilePositions[index]
+                  : "center center",
+            }}
           />
         </div>
       ))}
 
-      {/* Dark Overlay */}
+
+      {/* =====================================================
+          DARK OVERLAY
+      ===================================================== */}
+
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Bottom Gradient */}
+
+      {/* =====================================================
+          BOTTOM GRADIENT
+      ===================================================== */}
+
       <div
         className="
           absolute
@@ -69,7 +117,11 @@ export default function Hero() {
         "
       />
 
-      {/* Hero Content */}
+
+      {/* =====================================================
+          HERO CONTENT
+      ===================================================== */}
+
       <div
         className="
           absolute
@@ -79,13 +131,15 @@ export default function Hero() {
           text-white
 
           sm:bottom-12
+
           md:bottom-24
           md:left-16
           md:right-auto
         "
       >
 
-        {/* Name */}
+        {/* NAME */}
+
         <h1
           className="
             text-[25px]
@@ -103,12 +157,15 @@ export default function Hero() {
         >
           SABIN
           <br className="sm:hidden" />
+
           <span className="sm:ml-3">
             URALIKANDY
           </span>
         </h1>
 
-        {/* Profession */}
+
+        {/* PROFESSION */}
+
         <p
           className="
             mt-3
@@ -126,7 +183,9 @@ export default function Hero() {
           Director of Photography
         </p>
 
-        {/* Showreel Button */}
+
+        {/* SHOWREEL BUTTON */}
+
         <button
           className="
             mt-7
